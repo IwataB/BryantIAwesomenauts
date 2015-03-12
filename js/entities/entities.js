@@ -46,7 +46,7 @@ game.PlayerEntity = me.Entity.extend({
     }
 });
 
-game.PlayerBaseEntity = me.Entitiy.extend({
+game.PlayerBaseEntity = me.Entity.extend({
     init : function (x, y, settings){
         this._super(me.Entity, 'init', [x, y, {
           image: "tower",
@@ -55,7 +55,7 @@ game.PlayerBaseEntity = me.Entitiy.extend({
           sritewidth: "100",
           spriteheight: "100",
           getShape: function(){
-              return (new me.Rect(0, 0, 100, 100)).toPolygon
+              return (new me.Rect(0, 0, 100, 100)).toPolygon();
           }
         }]);
         this.broken = false;
@@ -81,7 +81,7 @@ game.PlayerBaseEntity = me.Entitiy.extend({
     }
 })
 
-game.EnemyBaseEntity = me.Entitiy.extend({
+game.EnemyBaseEntity = me.Entity.extend({
     init : function (x, y, settings){
         this._super(me.Entity, 'init', [x, y, {
           image: "tower",
@@ -90,7 +90,7 @@ game.EnemyBaseEntity = me.Entitiy.extend({
           sritewidth: "100",
           spriteheight: "100",
           getShape: function(){
-              return (new me.Rect(0, 0, 100, 100)).toPolygon
+              return (new me.Rect(0, 0, 100, 100)).toPolygon();
           }
         }]);
         this.broken = false;
