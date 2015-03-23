@@ -55,7 +55,7 @@ game.PlayerBaseEntity = me.Entity.extend({
           sritewidth: "100",
           spriteheight: "100",
           getShape: function(){
-              return (new me.Rect(0, 0, 100, 100)).toPolygon();
+              return (new me.Rect(0, 0, 100, 70)).toPolygon();
           }
         }]);
         this.broken = false;
@@ -64,11 +64,16 @@ game.PlayerBaseEntity = me.Entity.extend({
         this.body.onCollision = this.onCollision.bind(this);
         
         this.type = "PlayerBaseEntity";
+        
+        this.renderable.addAnimation("idle", [0]);
+        this.renderable.addAnimation("broken", [1]);
+        this.renderable.setCurrentAnimation("idle");
     },
     
     update:function(delta){
         if(this.health<=0){
             this.broken = true;
+            this.renderable.setCurrentAnimation("broken");
         }
         this.body.update(delta);
         
@@ -79,7 +84,7 @@ game.PlayerBaseEntity = me.Entity.extend({
         
         
     }
-})
+});
 
 game.EnemyBaseEntity = me.Entity.extend({
     init : function (x, y, settings){
@@ -90,7 +95,7 @@ game.EnemyBaseEntity = me.Entity.extend({
           sritewidth: "100",
           spriteheight: "100",
           getShape: function(){
-              return (new me.Rect(0, 0, 100, 100)).toPolygon();
+              return (new me.Rect(0, 0, 100, 70)).toPolygon();
           }
         }]);
         this.broken = false;
@@ -99,11 +104,16 @@ game.EnemyBaseEntity = me.Entity.extend({
         this.body.onCollision = this.onCollision.bind(this);
         
         this.type = "EnemyBaseEntity";
+        
+        this.renderable.addAnimation("idle", [0]);
+        this.renderable.addAnimation("broken", [1]);
+        this.renderable.setCurrentAnimation("idle");
     },
     
     update:function(delta){
         if(this.health<=0){
             this.broken = true;
+            this.renderable.setCurrentAnimation("broken");
         }
         this.body.update(delta);
         
@@ -113,4 +123,4 @@ game.EnemyBaseEntity = me.Entity.extend({
     onCollision: function(){
            
     }
-})
+});

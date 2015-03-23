@@ -32,15 +32,7 @@
   </data>
  </layer>
  <objectgroup name="BaseEntities">
-  <object x="910" y="420" width="70" height="140">
-   <properties>
-    <property name="EnemyBase" value=""/>
-   </properties>
-  </object>
-  <object x="140" y="420" width="70" height="140">
-   <properties>
-    <property name="PlayerBase" value=""/>
-   </properties>
-  </object>
+  <object name="EnemyBase" x="910" y="420" width="70" height="140"/>
+  <object name="PlayerBase" x="140" y="420" width="70" height="140"/>
  </objectgroup>
 </map>
