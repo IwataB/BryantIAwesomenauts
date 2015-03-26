@@ -14,7 +14,8 @@ game.PlayerEntity = me.Entity.extend({
 
         this.body.setVelocity(5, 20);
         this.facing = "right";
-        me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH)
+        //direction your character is facing
+        me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
 
         this.renderable.addAnimation("idle", [78]);
         this.renderable.addAnimation("walk", [117, 118, 119, 120, 121, 122, 123, 124, 125], 80);
@@ -28,7 +29,7 @@ game.PlayerEntity = me.Entity.extend({
             //setVelocity() and multiplying it by me.timer.tick.
             //me.timer.tick
             this.body.vel.x += this.body.accel.x * me.timer.tick;
-            this.facing = "right"
+            this.facing = "right";
             this.flipX(true);
         }
         else if (me.input.isKeyPressed("left")) {
@@ -55,6 +56,8 @@ game.PlayerEntity = me.Entity.extend({
                 this.renderable.setAnimationFrame();
             }
         }
+        
+        
 
         else if (this.body.vel.x !== 0) {
 
@@ -80,7 +83,7 @@ game.PlayerEntity = me.Entity.extend({
                 this.body.falling = false;
                 this.body.vel.y = -1;
             }
-            else if(xdif<-35 && this.facing === 'right' && (xdif<0)){
+            else if(xdif>-35 && this.facing === 'right' && (xdif<0)){
                 this.body.vel.x = 0;
                 this.pos.x = this.pos.x -1;
             }   
