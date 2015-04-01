@@ -84,7 +84,7 @@ game.PlayerEntity = me.Entity.extend({
             }
             if(this.renderable.isCurrentAnimation("attack") && this.now-this.lastHit >=400){
                 this.lastHit = this.now;
-                response.b.loseHealth()
+                response.b.loseHealth();
             }
         }
     }
