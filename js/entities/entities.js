@@ -51,7 +51,7 @@ game.PlayerEntity = me.Entity.extend({
         
         
 
-        else if (this.body.vel.x !== 0 && !this.renderable.isCurrentAnimation("attack")) {
+        if (this.body.vel.x !== 0 && !this.renderable.isCurrentAnimation("attack")) {
             if (!this.renderable.isCurrentAnimation("walk")) {
                 this.renderable.setCurrentAnimation("walk");
             }
@@ -66,7 +66,7 @@ game.PlayerEntity = me.Entity.extend({
     },
     
     collideHandler: function(response){
-        if(response.b.type === 'enemyBaseEntity'){
+        if(response.b.type === 'EnemyBaseEntity'){
             var ydif = this.pos.y - response.b.pos.y;
             var xdif = this.pos.x - response.b.pos.x;
             
