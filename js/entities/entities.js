@@ -43,14 +43,12 @@ game.PlayerEntity = me.Entity.extend({
         } else {
             this.body.vel.x = 0;
         }
-
+        
         if(me.input.isKeyPressed("jump") && !this.body.jumping && !this.body.falling){
             this.body.jumping = true;
             this.body.vel.y -= this.body.accel.y * me.timer.tick;
         }
         
-        
-
         if (this.body.vel.x !== 0 && !this.renderable.isCurrentAnimation("attack")) {
             if (!this.renderable.isCurrentAnimation("walk")) {
                 this.renderable.setCurrentAnimation("walk");
@@ -60,6 +58,17 @@ game.PlayerEntity = me.Entity.extend({
         }
         me.collision.check(this, true, this.collideHandler.bind(this), true);
         this.body.update(delta);
+        
+        if(me.input.isKeyPressed("attack")){
+            if(!this.renderable.isCurrentAnimation("attack")){
+                //sets the current animation to attack once that is over it goes back to idle
+                this.renderable.setCurrentAnimation("attack", "idle");
+                //makes it so that we start the animation on the first frame 
+                //not where we left off with the animation
+                this.renderable.setAnimationFrame();
+            }
+        }
+
 
         this._super(me.Entity, "update", [delta]);
         return true;
@@ -74,11 +83,11 @@ game.PlayerEntity = me.Entity.extend({
                 this.body.falling = false;
                 this.body.vel.y = -1;
             }
-            else if(xdif>-35 && this.facing === 'right' && (xdif<0)){
+            else if(xdif>-35 && this.facing === "right" && (xdif<0)){
                 this.body.vel.x = 0;
                 this.pos.x = this.pos.x -1;
             }   
-            else if(xdif<60 && this.facing === 'left' && xdif>0){
+            else if(xdif<60 && this.facing === "left" && xdif>0){
                 this.body.vel.x = 0;
                 this.pos.x = this.pos.x +1;
             }
@@ -169,3 +178,31 @@ game.EnemyBaseEntity = me.Entity.extend({
         this.health--;
     }
 });
+
+game.EnemyCreep = me.Entity.extend({
+    init: function(x, y, settings){
+        this._super(me.Entity, 'init', [x, y, {
+            image: "creep1",
+            width: 32,
+            height: 64,
+            spritewidth: "32",
+            spriteheight: "64",
+            getShape: function(){
+                return (new me.rect(0, 0, 32, 64)).toPolygon();
+            }
+        }]);
+        this.health = 10;
+        this.alwaysUpdate = true;
+        
+        this.setVelocity(3, 20);
+        
+        this.type = "EnemyCreep";
+        
+        this.renderable.addAnimation("walk", [3, 4, 5], 80);
+        this.renderable.setCurrentAnimation("walk");
+    },
+    
+    update: function(){
+        
+    }
+})
