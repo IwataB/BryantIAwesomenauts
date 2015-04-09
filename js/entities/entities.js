@@ -74,6 +74,10 @@ game.PlayerEntity = me.Entity.extend({
         return true;
     },
     
+    loseHealth: function(){
+        this.health = this.health - 1;
+    },
+    
     collideHandler: function(response){
         if(response.b.type === 'EnemyBaseEntity'){
             var ydif = this.pos.y - response.b.pos.y;
@@ -94,6 +98,11 @@ game.PlayerEntity = me.Entity.extend({
             if(this.renderable.isCurrentAnimation("attack") && this.now-this.lastHit >=400){
                 this.lastHit = this.now;
                 response.b.loseHealth();
+            }
+        }
+        else if(this.response.b.type === 'enemyCreep'){
+            if(this.renderable.isCurrentAnimation("attack")){
+                response.b.loseHealth(1);
             }
         }
     }
@@ -132,14 +141,15 @@ game.PlayerBaseEntity = me.Entity.extend({
         this._super(me.Entity, "update", [delta]);
         return true;
     },
-    lostHealth: function(damage){
-      this.health = this.health - damage;  
+
+    loseHealth: function(){
+        this.health = this.health - 1;
     },
     
     onCollision: function() {
 
 
-    }
+    },
 });
 
 game.EnemyBaseEntity = me.Entity.extend({
@@ -212,6 +222,10 @@ game.EnemyCreep = me.Entity.extend({
     },
     
     update: function(delta){
+        if(this.health <= 0){
+            me.game.world.removeChild(this);
+        }
+        
         this.now = new Date().getTime();
         
         this.body.vel.x -= this.body.accel.x *me.timer.tick;
@@ -231,10 +245,28 @@ game.EnemyCreep = me.Entity.extend({
             //this.lastAttacking = this.now;
             this.body.vel.x = 0;
             this.pos.x = this.pos.x + 1;
+            //prevents creeps from hitting for 1 second
             if((this.now - this.lastHit >= 1000)){
+                //sets last hit to now
                 this.lastHit = this.now;
+                //player base loses 1 health 
                 response.b.loseHealth(1);
             }
+        }
+        else if(response.b.type === 'PlayerEntitiy'){
+            var xdif = this.pos.x - response.b.pos.x;
+            this.attacking = true;
+            //this.lastAttacking = this.now;
+            this.body.vel.x = 0;
+            if(xdif>0){
+            this.pos.x = this.pos.x + 1;
+        }
+            //prevents creeps from hitting for 1 second
+            if((this.now - this.lastHit >= 1000) && xdif>0){
+                //sets last hit to now
+                this.lastHit = this.now;
+                //player base loses 1 health 
+                response.b.loseHealth(1);
         }
     }
 });
