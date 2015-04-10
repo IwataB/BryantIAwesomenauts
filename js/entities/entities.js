@@ -101,7 +101,8 @@ game.PlayerEntity = me.Entity.extend({
             }
         }
         else if(this.response.b.type === 'enemyCreep'){
-            if(this.renderable.isCurrentAnimation("attack")){
+            if(this.renderable.isCurrentAnimation("attack") && this.now-this.lastHit >=1000
+                    && (Math.abs(ydif) <=40) && (xdif>0)){
                 response.b.loseHealth(1);
             }
         }
@@ -149,7 +150,7 @@ game.PlayerBaseEntity = me.Entity.extend({
     onCollision: function() {
 
 
-    },
+    }
 });
 
 game.EnemyBaseEntity = me.Entity.extend({
@@ -221,6 +222,10 @@ game.EnemyCreep = me.Entity.extend({
         this.renderable.setCurrentAnimation("walk");
     },
     
+    loseHealth: function(damage){
+        this.health = this.health - 1;
+    },
+    
     update: function(delta){
         if(this.health <= 0){
             me.game.world.removeChild(this);
@@ -269,7 +274,7 @@ game.EnemyCreep = me.Entity.extend({
                 response.b.loseHealth(1);
         }
     }
-});
+}),
 
 game.GameManager = Object.extend({
     init: function(x, y, settings){
@@ -286,6 +291,7 @@ game.GameManager = Object.extend({
             this.lastCreep = this.now;
             var creepe = me.pool.pull("EnemyCreep", 1000, 0, {});
             me.game.world.addChild(creepe, 5);
+            //adds creeps into the game on a timer
         }
         return true; 
     }
