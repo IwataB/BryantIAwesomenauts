@@ -270,11 +270,11 @@ game.EnemyCreep = me.Entity.extend({
             if((this.now - this.lastHit >= 1000) && xdif>0){
                 //sets last hit to now
                 this.lastHit = this.now;
-                //player base loses 1 health 
+                //player loses 1 health 
                 response.b.loseHealth(1);
         }
     }
-}),
+}}),
 
 game.GameManager = Object.extend({
     init: function(x, y, settings){
